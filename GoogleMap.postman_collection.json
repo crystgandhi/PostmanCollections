@@ -1,0 +1,217 @@
+{
+	"info": {
+		"_postman_id": "59cb9d9b-d5a6-4c4b-af88-ea00e8841e01",
+		"name": "GoogleMap",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "14121942"
+	},
+	"item": [
+		{
+			"name": "AddAPI",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const jsonData=pm.response.json();\r",
+							"const place_id=jsonData.place_id;\r",
+							"pm.collectionVariables.set(\"place_id\", place_id)\r",
+							"pm.test(\"Validate status code\", function(){\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"pm.test(\"Validate response time\", function(){\r",
+							"  console.log(pm.response.responseTime);\r",
+							"   pm.expect(pm.response.responseTime).to.be.below(2000);\r",
+							"});\r",
+							"pm.test(\"Validate String in Response\", function(){\r",
+							"    pm.expect(jsonData.status).to.eql(\"OK\");\r",
+							"})\r",
+							"pm.test(\"Validate include word\", function(){\r",
+							"    pm.expect(pm.response.text()).includes(\"APP\");\r",
+							"})\r",
+							"   \r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"location\": {\r\n    \"lat\": -38.383494,\r\n    \"lng\": 33.427362\r\n  },\r\n  \"accuracy\": 50,\r\n  \"name\": \"Frontline house\",\r\n  \"phone_number\": \"(+91) 983 893 3917\",\r\n  \"address\": \"29, side layout, cohen 09\",\r\n  \"types\": [\r\n    \"shoe park\",\r\n    \"shop\"\r\n  ],\r\n  \"website\": \"http://google.com\",\r\n  \"language\": \"French-IN\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}add/json?key =qaclick123  ",
+					"host": [
+						"{{url}}add"
+					],
+					"path": [
+						"json"
+					],
+					"query": [
+						{
+							"key": "key ",
+							"value": "qaclick123  "
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetLocation",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const jsonData1=pm.response.json();\r",
+							"\r",
+							"pm.test(\"Validate Response code\", function(){\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"pm.test(\"Validate Response time\", function(){\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(2000)\r",
+							"});\r",
+							"pm.test(\"Validate Response messages\", function(){\r",
+							"pm.expect(jsonData1.accuracy).to.eql(\"50\");\r",
+							"pm.expect(pm.response.text()).includes(\"Frontline\")\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}get/json?key=qaclick123&place_id={{place_id}}",
+					"host": [
+						"{{url}}get"
+					],
+					"path": [
+						"json"
+					],
+					"query": [
+						{
+							"key": "key",
+							"value": "qaclick123"
+						},
+						{
+							"key": "place_id",
+							"value": "{{place_id}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DeleteAPI",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const jsonData1=pm.response.json();\r",
+							"\r",
+							"pm.test(\"Validate Response code\", function(){\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"pm.test(\"Validate Response time\", function(){\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(2000)\r",
+							"});\r",
+							"pm.test(\"Validate Response messages\", function(){\r",
+							"pm.expect(jsonData1.status).to.eql(\"OK\");\r",
+							"pm.expect(pm.response.text()).includes(\"OK\")\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"place_id\":\"{{place_id}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}delete/json?key",
+					"host": [
+						"{{url}}delete"
+					],
+					"path": [
+						"json"
+					],
+					"query": [
+						{
+							"key": "key",
+							"value": null
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "url",
+			"value": "https://rahulshettyacademy.com/maps/api/place/",
+			"type": "string"
+		},
+		{
+			"key": "place_id",
+			"value": "",
+			"type": "string"
+		}
+	]
+}
